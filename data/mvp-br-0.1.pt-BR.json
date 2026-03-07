@@ -1,0 +1,303 @@
+{
+  "version": "mvp-br-0.1",
+  "locale": "pt-BR",
+  "biomePack": {
+    "id": "br_mata_atlantica_rio_urbano",
+    "name": "Brasil - Mata Atlântica (Rio Urbano + Trecho Preservado)",
+    "maps": [
+      {
+        "id": "map_rio_urbano_01",
+        "name": "Rio Urbano 01",
+        "timePresets": ["day", "dusk", "night"],
+        "turbidityPresets": ["medium", "high"],
+        "depthRangeMeters": { "min": 0.2, "max": 5.5 }
+      },
+      {
+        "id": "map_rio_preservado_01",
+        "name": "Trecho Preservado 01",
+        "timePresets": ["day", "dusk", "night"],
+        "turbidityPresets": ["low", "medium"],
+        "depthRangeMeters": { "min": 0.2, "max": 6.0 }
+      },
+      {
+        "id": "map_represa_01",
+        "name": "Represa 01 (Inspeção)",
+        "timePresets": ["day", "night"],
+        "turbidityPresets": ["low", "medium"],
+        "depthRangeMeters": { "min": 0.5, "max": 12.0 }
+      }
+    ]
+  },
+  "enums": {
+    "timeOfDay": ["day", "dusk", "night"],
+    "turbidity": ["low", "medium", "high"],
+    "habitat": [
+      "surface",
+      "margin",
+      "midwater",
+      "bottom",
+      "vegetation",
+      "structure",
+      "remanso",
+      "corredeira",
+      "urban",
+      "preserved"
+    ],
+    "evidenceType": ["photo", "macro", "sonar", "edna", "environmental"],
+    "validity": ["valid", "partial", "invalid"]
+  },
+  "evidenceRules": {
+    "minQualityToCount": 60,
+    "requiresMetadata": true,
+    "metadataKeysRequired": ["timestamp", "depthMeters", "turbidity", "position", "temperatureC"],
+    "qualityWeights": {
+      "stability": 0.35,
+      "distance": 0.25,
+      "light": 0.2,
+      "noise": 0.2
+    },
+    "qualityComputation": {
+      "stabilityPenalty": { "maxPenalty": 0.4 },
+      "distancePenalty": { "maxPenalty": 0.3 },
+      "lightPenalty": { "maxPenalty": 0.35 },
+      "noisePenalty": { "maxPenalty": 0.5 }
+    }
+  },
+  "stealthDiscipline": {
+    "noiseUnits": {
+      "description": "Assinatura sonora abstrata do drone (0..4+).",
+      "low": 1.2,
+      "medium": 2.2,
+      "high": 3.2
+    },
+    "lightUnits": {
+      "description": "Intensidade de luz (0..3).",
+      "off": 0,
+      "low": 1,
+      "normal": 2,
+      "high": 3
+    }
+  },
+  "catalog": {
+    "species": [
+      {
+        "id": "sp_tilapia",
+        "commonName": "Tilápia",
+        "scientificName": "Oreochromis spp.",
+        "group": "fish",
+        "rarity": 1,
+        "difficulty": 2,
+        "habitats": ["urban", "remanso", "midwater"],
+        "depthMeters": { "min": 0.8, "max": 3.5 },
+        "timeOfDay": ["day"],
+        "turbidity": ["medium", "high"],
+        "sensitivity": { "noise": 1, "light": 1 },
+        "recommendedEvidence": ["photo", "sonar"],
+        "requiredEvidencePack": {
+          "anyOf": [
+            { "type": "photo", "minQuality": 60 },
+            { "type": "sonar", "minQuality": 55 }
+          ],
+          "metadataRequired": true
+        },
+        "notes": "Comum em áreas urbanas; bom para tutorial."
+      },
+      {
+        "id": "sp_lambari",
+        "commonName": "Lambari",
+        "scientificName": "Astyanax spp.",
+        "group": "fish",
+        "rarity": 2,
+        "difficulty": 3,
+        "habitats": ["margin", "vegetation", "urban", "preserved"],
+        "depthMeters": { "min": 0.2, "max": 1.2 },
+        "timeOfDay": ["day"],
+        "turbidity": ["low", "medium"],
+        "sensitivity": { "noise": 2, "light": 2 },
+        "recommendedEvidence": ["photo"],
+        "requiredEvidencePack": {
+          "allOf": [{ "type": "photo", "minQuality": 65 }],
+          "metadataRequired": true
+        },
+        "notes": "Exige aproximação lenta e estável."
+      },
+      {
+        "id": "sp_traira",
+        "commonName": "Traíra",
+        "scientificName": "Hoplias spp.",
+        "group": "fish",
+        "rarity": 2,
+        "difficulty": 3,
+        "habitats": ["vegetation", "remanso", "preserved"],
+        "depthMeters": { "min": 0.3, "max": 2.0 },
+        "timeOfDay": ["dusk", "night"],
+        "turbidity": ["medium"],
+        "sensitivity": { "noise": 1, "light": 2 },
+        "recommendedEvidence": ["photo"],
+        "requiredEvidencePack": {
+          "anyOf": [{ "type": "photo", "minQuality": 60 }],
+          "metadataRequired": true
+        },
+        "notes": "Boa para introduzir operação noturna."
+      },
+      {
+        "id": "sp_cascudo",
+        "commonName": "Cascudo",
+        "scientificName": "Hypostomus spp.",
+        "group": "fish",
+        "rarity": 1,
+        "difficulty": 2,
+        "habitats": ["bottom", "structure", "urban", "preserved"],
+        "depthMeters": { "min": 1.0, "max": 3.8 },
+        "timeOfDay": ["night"],
+        "turbidity": ["medium", "high"],
+        "sensitivity": { "noise": 0, "light": 1 },
+        "recommendedEvidence": ["photo", "sonar"],
+        "requiredEvidencePack": {
+          "anyOf": [
+            { "type": "photo", "minQuality": 58 },
+            { "type": "sonar", "minQuality": 55 }
+          ],
+          "metadataRequired": true
+        },
+        "notes": "Fácil, mas visibilidade geralmente ruim."
+      },
+      {
+        "id": "sp_carpa",
+        "commonName": "Carpa",
+        "scientificName": "Cyprinus carpio",
+        "group": "fish",
+        "rarity": 2,
+        "difficulty": 2,
+        "habitats": ["urban", "remanso", "midwater"],
+        "depthMeters": { "min": 0.8, "max": 4.0 },
+        "timeOfDay": ["day", "dusk"],
+        "turbidity": ["medium", "high"],
+        "sensitivity": { "noise": 1, "light": 1 },
+        "recommendedEvidence": ["photo", "sonar"],
+        "requiredEvidencePack": {
+          "anyOf": [
+            { "type": "photo", "minQuality": 60 },
+            { "type": "sonar", "minQuality": 55 }
+          ],
+          "metadataRequired": true
+        },
+        "notes": "Espécie exótica frequente em trechos impactados."
+      },
+      {
+        "id": "pl_aguape",
+        "commonName": "Aguapé",
+        "scientificName": "Eichhornia crassipes",
+        "group": "plant",
+        "rarity": 1,
+        "difficulty": 1,
+        "habitats": ["surface", "margin", "urban"],
+        "depthMeters": { "min": 0.0, "max": 0.5 },
+        "timeOfDay": ["day", "dusk"],
+        "turbidity": ["low", "medium", "high"],
+        "sensitivity": { "noise": 0, "light": 0 },
+        "recommendedEvidence": ["photo", "environmental"],
+        "requiredEvidencePack": {
+          "allOf": [
+            { "type": "photo", "minQuality": 50 },
+            { "type": "environmental", "minQuality": 0, "requiredSensors": ["turbidity", "oxygen"] }
+          ],
+          "metadataRequired": true
+        },
+        "notes": "Planta invasora associada à eutrofização."
+      },
+      {
+        "id": "env_espuma_oleo",
+        "commonName": "Espuma/óleo superficial",
+        "scientificName": null,
+        "group": "environment",
+        "rarity": 1,
+        "difficulty": 2,
+        "habitats": ["surface", "urban"],
+        "depthMeters": { "min": 0.0, "max": 0.3 },
+        "timeOfDay": ["day", "dusk"],
+        "turbidity": ["medium", "high"],
+        "sensitivity": { "noise": 0, "light": 0 },
+        "recommendedEvidence": ["photo", "environmental"],
+        "requiredEvidencePack": {
+          "allOf": [
+            { "type": "photo", "minQuality": 55 },
+            { "type": "environmental", "minQuality": 0, "requiredSensors": ["turbidity", "pH"] }
+          ],
+          "metadataRequired": true
+        },
+        "notes": "Entrada-chave para missão de poluição."
+      }
+    ]
+  },
+  "missions": [
+    {
+      "id": "m_transecto_cientifico_01",
+      "name": "Transecto Científico 01",
+      "mapId": "map_rio_urbano_01",
+      "timeOfDay": "day",
+      "turbidity": "medium",
+      "objectives": [
+        { "type": "visitPoints", "count": 8, "radiusMeters": 3.0, "orderMatters": false },
+        { "type": "takeReadings", "sensors": ["temperature", "turbidity", "pH", "oxygen"], "minPoints": 8 },
+        { "type": "collectValidEvidence", "minValid": 5, "allowedEvidenceTypes": ["photo", "macro", "sonar"] }
+      ],
+      "restrictions": {
+        "maxCollisions": 2,
+        "maxAverageNoise": 2.4,
+        "maxLightLevel": 2
+      },
+      "rewards": { "xp": 120, "credits": 200, "reputation": 10 }
+    },
+    {
+      "id": "m_invasoras_01",
+      "name": "Invasoras e Eutrofização",
+      "mapId": "map_rio_urbano_01",
+      "timeOfDay": "day",
+      "turbidity": "high",
+      "objectives": [
+        { "type": "catalogTargets", "targets": ["sp_tilapia", "sp_carpa", "pl_aguape", "env_espuma_oleo"], "minValidPerTarget": 1 },
+        { "type": "markPollutionZone", "minMarkers": 3, "requires": ["photo", "environmental"] }
+      ],
+      "restrictions": {
+        "maxCollisions": 1,
+        "maxAverageNoise": 2.6
+      },
+      "rewards": { "xp": 150, "credits": 250, "reputation": 12 }
+    },
+    {
+      "id": "m_ponte_inspecao_01",
+      "name": "Inspeção de Ponte 01",
+      "mapId": "map_rio_urbano_01",
+      "timeOfDay": "dusk",
+      "turbidity": "medium",
+      "objectives": [
+        { "type": "scanStructures", "count": 4, "tool": "sonar", "minQuality": 55 },
+        { "type": "macroEvidence", "count": 3, "tag": "crack/corrosion/biofouling", "minQuality": 65 }
+      ],
+      "restrictions": {
+        "maxCollisions": 0,
+        "maxAverageNoise": 2.2
+      },
+      "rewards": { "xp": 180, "credits": 320, "reputation": 15 }
+    }
+  ],
+  "reportScoring": {
+    "weights": { "science": 0.4, "operation": 0.25, "discretion": 0.2, "safety": 0.15 },
+    "rankThresholds": {
+      "S": { "minOverall": 90, "minPerSection": 80 },
+      "A": { "minOverall": 80 },
+      "B": { "minOverall": 65 },
+      "C": { "minOverall": 0 }
+    },
+    "penalties": {
+      "collision": 10,
+      "restrictedZoneViolation": 20,
+      "majorIncidentSafetyZero": true
+    },
+    "checklistImpact": {
+      "skippedPenaltyOperation": 15,
+      "skippedIncreasesInvalidEvidenceChance": 0.2
+    }
+  }
+}
