@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projeto HARPA Manta | Drones Subaquáticos Autônomos com IA</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <nav class="top-nav">
+        <strong>HARPA Manta</strong>
+        <a href="#curiosidades">Curiosidades</a>
+        <a href="#arquitetura">Arquitetura</a>
+        <a href="#missoes">Missões</a>
+      </nav>
+
+      <div class="hero-content">
+        <div>
+          <p class="tag">Conceito visual • Simulação em tempo real</p>
+          <h1>Drone-mãe inspirado em arraia manta com mini-drones cooperativos</h1>
+          <p>
+            Visualização de um modelo de drone subaquático estilo HARPA (EUA),
+            com cardumes variados e lançamento de mini-drones do compartimento
+            inferior para missões de mapeamento e inspeção.
+          </p>
+          <a class="cta" href="#video">Assistir simulação</a>
+        </div>
+
+        <section id="video" class="video-card">
+          <h2>Vídeo conceitual do sistema</h2>
+          <p>
+            A cena mostra o drone mãe, peixes de tamanhos variados e mini-drones
+            saindo debaixo do casco.
+          </p>
+          <canvas
+            id="manta-video"
+            width="960"
+            height="540"
+            aria-label="Simulação da arraia-drone com mini-drones"
+          ></canvas>
+          <small>
+            Nota: vídeo gerado como animação web para prototipação rápida da cena.
+          </small>
+        </section>
+      </div>
+    </header>
+
+    <main>
+      <section id="curiosidades" class="panel">
+        <h2>Curiosidades do projeto</h2>
+        <ul>
+          <li>
+            O design em formato de manta melhora eficiência hidrodinâmica,
+            estabilidade e assinatura acústica reduzida.
+          </li>
+          <li>
+            O drone-mãe atua como base móvel de energia, dados e coordenação de
+            mini-drones especializados.
+          </li>
+          <li>
+            A IA de bordo combina visão computacional e navegação adaptativa para
+            evitar obstáculos e acompanhar cardumes sem perturbá-los.
+          </li>
+          <li>
+            A arquitetura de enxame permite dividir tarefas: mapeamento 3D,
+            inspeção estrutural, coleta ambiental e vigilância.
+          </li>
+        </ul>
+      </section>
+
+      <section id="arquitetura" class="panel two-col">
+        <article>
+          <h3>Arquitetura autônoma com IA</h3>
+          <ol>
+            <li><strong>Planejamento:</strong> rota otimizada por objetivo e risco.</li>
+            <li><strong>Percepção:</strong> sonar + câmeras + fusão sensorial.</li>
+            <li><strong>Coordenação:</strong> drone-mãe distribui tarefas.</li>
+            <li><strong>Retorno:</strong> mini-drones acoplam para recarga e upload.</li>
+          </ol>
+        </article>
+
+        <article>
+          <h3>Aplicações reais</h3>
+          <ul>
+            <li>Inspeção de infraestrutura offshore e portos.</li>
+            <li>Monitoramento ambiental contínuo.</li>
+            <li>Busca e reconhecimento em áreas de baixa visibilidade.</li>
+            <li>Mapeamento batimétrico cooperativo.</li>
+          </ul>
+        </article>
+      </section>
+
+      <section id="missoes" class="panel">
+        <h2>Exemplo de missão</h2>
+        <p>
+          O drone-mãe aproxima-se de um recife artificial, reduz velocidade e
+          libera quatro mini-drones do compartimento inferior. Enquanto dois
+          realizam varredura lateral, os demais seguem cardumes pequenos para
+          identificar padrões de comportamento e qualidade da água.
+        </p>
+      </section>
+    </main>
+
+    <footer>
+      <p>Projeto conceitual de drones subaquáticos autônomos com IA • 2026</p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
