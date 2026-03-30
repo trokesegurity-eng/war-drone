@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Site oficial do Manta Ray Drone Simulator: simulador 3D subaquático com IA, autonomia e exploração biomimética."
+    />
+    <meta
+      name="keywords"
+      content="Manta Ray Drone Simulator, drone subaquático, simulador 3D, IA, WebGL"
+    />
+    <meta name="author" content="Equipe Manta Ray Drone Simulator" />
+    <meta property="og:title" content="Manta Ray Drone Simulator" />
+    <meta
+      property="og:description"
+      content="Explore o futuro dos drones subaquáticos com simulação 3D em tempo real."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pt_BR" />
+    <title>Manta Ray Drone Simulator | Site Oficial</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800&family=Open+Sans:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a href="#inicio" class="brand">Manta Ray Drone Simulator</a>
+      <button class="menu-toggle" aria-label="Abrir menu" aria-expanded="false">
+        ☰
+      </button>
+      <nav class="site-nav" aria-label="Menu principal">
+        <a href="#inicio">Início</a>
+        <a href="#sobre">Sobre</a>
+        <a href="#tecnologia">Tecnologia</a>
+        <a href="#galeria">Galeria</a>
+        <a href="#equipe">Equipe</a>
+        <a href="#contato">Contato</a>
+      </nav>
+    </header>
+
+    <main>
+      <section id="inicio" class="hero section-16-9">
+        <div class="underwater-glow" aria-hidden="true"></div>
+        <div class="video-container">
+          <video autoplay muted loop playsinline poster="img/hero-poster.jpg">
+            <source src="video/mantaray_simulador.mp4" type="video/mp4" />
+            Seu navegador não suporta vídeo HTML5.
+          </video>
+        </div>
+        <div class="hero-text">
+          <p class="eyebrow">Site Oficial</p>
+          <h1>Explorando o futuro dos drones subaquáticos</h1>
+          <p>
+            Simulador 3D autônomo com IA, design biomimético e minidrones
+            integrados para missões oceânicas avançadas.
+          </p>
+          <a class="btn-primary" href="#tecnologia">Conheça a tecnologia</a>
+        </div>
+      </section>
+
+      <section id="sobre" class="content-section">
+        <h2>Sobre o Projeto</h2>
+        <p>
+          O Manta Ray Drone Simulator é uma plataforma de simulação que combina
+          robótica subaquática, física realista e inteligência artificial para
+          estudar navegação autônoma em ambientes complexos do oceano.
+        </p>
+      </section>
+
+      <section id="tecnologia" class="content-section panel">
+        <h2>Tecnologia</h2>
+        <ul class="tech-list">
+          <li>IA de navegação autônoma e cooperação entre minidrones</li>
+          <li>
+            Sensores simulados: sonar, IMU, profundidade e visão computacional
+          </li>
+          <li>Simulação física realista com correntes, pressão e obstáculos</li>
+          <li>Renderização 3D em tempo real com exportação WebGL</li>
+        </ul>
+      </section>
+
+      <section id="galeria" class="content-section">
+        <h2>Galeria</h2>
+        <div class="gallery" role="list">
+          <img
+            src="img/img1.jpg"
+            alt="Drone Manta Ray em operação subaquática"
+            role="listitem"
+          />
+          <img
+            src="img/img2.jpg"
+            alt="Minidrones coordenados por IA"
+            role="listitem"
+          />
+          <img
+            src="img/img3.jpg"
+            alt="Cenário oceânico 3D no simulador"
+            role="listitem"
+          />
+        </div>
+      </section>
+
+      <section id="simulador" class="content-section panel">
+        <h2>Simulador WebGL</h2>
+        <p>
+          Integre sua build WebGL abaixo via iframe/canvas para demonstrações
+          públicas.
+        </p>
+        <div class="simulator-frame" aria-label="Área do simulador 3D">
+          <iframe
+            src="simulador/index.html"
+            title="Manta Ray Drone Simulator WebGL"
+            loading="lazy"
+          ></iframe>
+        </div>
+      </section>
+
+      <section id="equipe" class="content-section">
+        <h2>Equipe</h2>
+        <p>
+          Desenvolvedores, engenheiros e designers dedicados à inovação em
+          robótica subaquática, modelagem 3D e sistemas autônomos.
+        </p>
+      </section>
+
+      <section id="contato" class="content-section panel">
+        <h2>Contato</h2>
+        <form class="contact-form" action="#" method="post">
+          <label>
+            Nome
+            <input type="text" name="nome" placeholder="Seu nome" required />
+          </label>
+          <label>
+            E-mail
+            <input
+              type="email"
+              name="email"
+              placeholder="seuemail@exemplo.com"
+              required
+            />
+          </label>
+          <label>
+            Mensagem
+            <textarea
+              name="mensagem"
+              rows="5"
+              placeholder="Como podemos ajudar?"
+            ></textarea>
+          </label>
+          <button type="submit">Enviar</button>
+        </form>
+        <p class="social-links">
+          Redes sociais:
+          <a href="#" aria-label="Instagram">Instagram</a>
+          <a href="#" aria-label="YouTube">YouTube</a>
+          <a href="#" aria-label="LinkedIn">LinkedIn</a>
+        </p>
+      </section>
+    </main>
+
+    <footer>
+      <p>© 2026 Manta Ray Drone Simulator — Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+      const toggle = document.querySelector(".menu-toggle");
+      const nav = document.querySelector(".site-nav");
+
+      toggle?.addEventListener("click", () => {
+        const expanded = toggle.getAttribute("aria-expanded") === "true";
+        toggle.setAttribute("aria-expanded", String(!expanded));
+        nav.classList.toggle("open");
+      });
+    </script>
+  </body>
+</html>
