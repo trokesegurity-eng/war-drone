@@ -21,3 +21,17 @@ SETUP MVP (Unity 2D - Realista):
 4) Realismo:
    - Use sprites/normal maps + URP 2D Lights (opcional).
    - Turbidez e partículas via ParticleSystem (sedimento e bolhas).
+
+SETUP PROTÓTIPO 3D (Aqua Manta Runner):
+1) Crie a Scene "Level_AquaManta_3D".
+2) Adicione um GameObject vazio "Prototype3D" com o componente MantaGame3DBuilder.
+3) Dê Play.
+   - Controles:
+     - W/S: acelera/freia
+     - A/D: strafe lateral
+     - Mouse: direção
+     - Q/E: descer/subir
+     - Shift ou botão direito do mouse: boost
+4) Objetivo:
+   - Passe pelos anéis em sequência para pontuar.
+   - Administre bateria para manter velocidade alta.
