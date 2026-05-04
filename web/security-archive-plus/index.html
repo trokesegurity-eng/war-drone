@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Security Archive Plus</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body class="bg-slate-50 text-slate-900">
+    <div class="min-h-screen flex flex-col">
+      <header
+        class="sticky top-0 z-20 bg-white/95 backdrop-blur border-b border-slate-200"
+      >
+        <div
+          class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between gap-4"
+        >
+          <div class="flex items-center gap-3">
+            <div
+              class="h-11 w-11 rounded-lg bg-gradient-to-br from-indigo-600 to-blue-600 flex items-center justify-center shadow"
+            >
+              <i data-lucide="shield" class="text-white h-6 w-6"></i>
+            </div>
+            <div>
+              <h1 class="font-bold text-xl">Security Archive Plus</h1>
+              <p class="text-sm text-slate-500">
+                Painel moderno para registro e auditoria de ocorrências.
+              </p>
+            </div>
+          </div>
+          <div class="flex gap-2 flex-wrap">
+            <span class="pill" id="total-count">0 itens</span>
+            <span class="pill bg-indigo-50 text-indigo-700" id="video-count"
+              >0 vídeos</span
+            >
+          </div>
+        </div>
+      </header>
+
+      <main class="max-w-7xl w-full mx-auto px-4 py-6 space-y-6">
+        <section class="card p-5">
+          <h2 class="font-semibold text-lg mb-4 flex items-center gap-2">
+            <i data-lucide="plus-circle" class="h-5 w-5"></i>Novo registro
+          </h2>
+          <form
+            id="content-form"
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
+          >
+            <label class="field"
+              >Título
+              <input
+                id="title"
+                required
+                maxlength="120"
+                placeholder="Ex: Furto no corredor 3"
+              />
+            </label>
+            <label class="field"
+              >Tipo
+              <select id="type" required>
+                <option value="">Selecione...</option>
+                <option value="image">📸 Foto</option>
+                <option value="video">🎥 Vídeo</option>
+                <option value="youtube">▶️ YouTube</option>
+              </select>
+            </label>
+            <label class="field"
+              >Coleção
+              <input
+                id="collection"
+                maxlength="60"
+                placeholder="Ex: Loja Centro"
+              />
+            </label>
+            <label class="field"
+              >Duração
+              <input id="duration" maxlength="20" placeholder="Ex: 03:21" />
+            </label>
+            <label class="field lg:col-span-2"
+              >URL
+              <input
+                id="url"
+                type="url"
+                required
+                placeholder="Cole a URL aqui"
+              />
+            </label>
+            <label class="field lg:col-span-2"
+              >Notas
+              <textarea
+                id="notes"
+                rows="2"
+                maxlength="240"
+                placeholder="Detalhes úteis para investigação"
+              ></textarea>
+            </label>
+            <div class="lg:col-span-4 flex justify-end">
+              <button class="btn-primary" type="submit" id="submit-btn">
+                Salvar registro
+              </button>
+            </div>
+          </form>
+        </section>
+
+        <section class="card p-5 space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+            <input
+              id="search"
+              placeholder="Buscar por título, coleção ou notas..."
+              class="input"
+            />
+            <select id="filter-type" class="input">
+              <option value="all">Todos os tipos</option>
+              <option value="image">Somente fotos</option>
+              <option value="video">Somente vídeos</option>
+              <option value="youtube">Somente YouTube</option>
+            </select>
+            <input
+              id="filter-collection"
+              placeholder="Filtrar por coleção"
+              class="input"
+            />
+            <select id="sort" class="input">
+              <option value="newest">Mais recentes</option>
+              <option value="oldest">Mais antigos</option>
+              <option value="title">Título (A-Z)</option>
+            </select>
+          </div>
+          <div
+            id="content-grid"
+            class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"
+          ></div>
+        </section>
+      </main>
+    </div>
+
+    <template id="card-template">
+      <article class="card overflow-hidden flex flex-col">
+        <div
+          class="h-44 bg-slate-100 flex items-center justify-center relative"
+          data-preview
+        ></div>
+        <div class="p-4 flex-1 flex flex-col gap-2">
+          <div class="flex items-center justify-between gap-2">
+            <h3 class="font-semibold leading-tight" data-title></h3>
+            <span class="badge" data-type></span>
+          </div>
+          <p class="text-sm text-slate-500" data-meta></p>
+          <p class="text-sm text-slate-600" data-notes></p>
+          <div class="mt-auto flex gap-2 pt-3">
+            <a
+              class="btn-link"
+              data-open
+              target="_blank"
+              rel="noopener noreferrer"
+              >Abrir</a
+            >
+            <button class="btn-danger" data-delete>Excluir</button>
+          </div>
+        </div>
+      </article>
+    </template>
+
+    <div id="toast" class="hidden"></div>
+    <script src="./app.js"></script>
+  </body>
+</html>
