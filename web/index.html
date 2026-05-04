@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AgroSwarm AI | Plataforma SaaS AgTech</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <style>
+    :root {
+      --bg: #06110d;
+      --panel: rgba(8, 26, 20, 0.88);
+      --panel-soft: rgba(14, 37, 29, 0.72);
+      --stroke: rgba(124, 255, 186, 0.16);
+      --text: #e8fff2;
+      --muted: #9fc9b0;
+      --accent: #39d98a;
+      --accent-2: #8affcf;
+      --warning: #f6c85f;
+      --danger: #ff7d7d;
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; background: radial-gradient(circle at top, #0c251c 0%, var(--bg) 50%); color: var(--text); font-family: 'Inter', system-ui, sans-serif; }
+    body { min-height: 100vh; }
+    a { color: inherit; }
+
+    .app {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 28px 22px;
+      background: rgba(4, 12, 9, 0.86);
+      border-right: 1px solid var(--stroke);
+      backdrop-filter: blur(16px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+
+    .brand-mark {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, rgba(57, 217, 138, 0.25), rgba(138, 255, 207, 0.12));
+      border: 1px solid rgba(138, 255, 207, 0.2);
+      box-shadow: inset 0 0 20px rgba(138, 255, 207, 0.15);
+      font-size: 26px;
+    }
+
+    .brand h1 { font-size: 1.1rem; margin: 0; }
+    .brand p { font-size: 0.85rem; color: var(--muted); margin: 4px 0 0; }
+
+    .nav {
+      display: grid;
+      gap: 10px;
+      margin-top: 30px;
+    }
+
+    .nav a {
+      text-decoration: none;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--muted);
+      transition: 180ms ease;
+    }
+
+    .nav a:hover {
+      background: rgba(57, 217, 138, 0.08);
+      border-color: var(--stroke);
+      color: var(--text);
+      transform: translateX(4px);
+    }
+
+    .sidebar-card {
+      margin-top: 32px;
+      padding: 16px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(15, 39, 31, 0.92), rgba(10, 24, 19, 0.84));
+      border: 1px solid var(--stroke);
+      box-shadow: var(--shadow);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(57, 217, 138, 0.12);
+      color: var(--accent-2);
+      font-size: 0.8rem;
+      border: 1px solid rgba(57, 217, 138, 0.18);
+    }
+
+    .main { padding: 28px; }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border-radius: 28px;
+      padding: 36px;
+      background: linear-gradient(135deg, rgba(11, 34, 26, 0.96), rgba(7, 18, 14, 0.94));
+      border: 1px solid var(--stroke);
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -80px -80px auto;
+      width: 260px;
+      height: 260px;
+      background: radial-gradient(circle, rgba(138, 255, 207, 0.28), rgba(138, 255, 207, 0));
+      filter: blur(8px);
+      animation: floatGlow 5s ease-in-out infinite;
+    }
+
+    @keyframes floatGlow {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-18px); }
+    }
+
+    .hero-grid, .grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .hero-grid { grid-template-columns: 1.4fr 0.9fr; align-items: center; }
+    .title { font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.03; margin: 16px 0; max-width: 14ch; }
+    .subtitle { color: var(--muted); max-width: 64ch; line-height: 1.7; }
+
+    .cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px; }
+    .btn {
+      border: 0;
+      border-radius: 14px;
+      padding: 12px 18px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 180ms ease;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #2cc278);
+      color: #032111;
+      box-shadow: 0 10px 26px rgba(57, 217, 138, 0.25);
+    }
+    .btn-secondary {
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      border: 1px solid var(--stroke);
+    }
+    .btn:hover { transform: translateY(-2px); }
+
+    .metrics { grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 22px 0 24px; }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--stroke);
+      border-radius: 22px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .metric .label { color: var(--muted); font-size: 0.9rem; }
+    .metric .value { font-size: 2rem; font-weight: 800; margin: 10px 0 6px; }
+    .metric small { color: var(--accent-2); }
+
+    .stack { grid-template-columns: 1.2fr 0.8fr; margin-bottom: 18px; }
+    .chart-wrap { height: 320px; }
+    .panel-title { display: flex; justify-content: space-between; gap: 16px; align-items: center; margin-bottom: 16px; }
+    .panel-title h2, .panel-title h3 { margin: 0; }
+    .muted { color: var(--muted); }
+
+    #map { height: 420px; border-radius: 18px; overflow: hidden; }
+
+    .insights, .product-grid, .upload-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+    .insight {
+      padding: 18px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(11, 31, 24, 0.96), rgba(7, 17, 14, 0.92));
+      border: 1px solid var(--stroke);
+      transition: transform 220ms ease, border-color 220ms ease;
+    }
+    .insight:hover { transform: translateY(-4px); border-color: rgba(138, 255, 207, 0.34); }
+
+    .list { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+    .list li {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 12px 14px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius: 14px;
+    }
+
+    .upload-grid input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px dashed rgba(138, 255, 207, 0.24);
+      background: rgba(255,255,255,0.02);
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .output {
+      margin-top: 12px;
+      padding: 14px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.03);
+      white-space: pre-wrap;
+      min-height: 110px;
+      color: var(--muted);
+      border: 1px solid rgba(255,255,255,0.04);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.9rem;
+    }
+
+    .footer {
+      color: var(--muted);
+      text-align: center;
+      padding: 24px 0 8px;
+    }
+
+    @media (max-width: 1100px) {
+      .app { grid-template-columns: 1fr; }
+      .sidebar { position: relative; height: auto; }
+      .hero-grid, .stack, .metrics, .insights, .product-grid, .upload-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">🌱</div>
+        <div>
+          <h1>AgroSwarm AI</h1>
+          <p>Drone Ops • AI • SaaS • Swarm</p>
+        </div>
+      </div>
+      <div class="badge">● Sistema SaaS demo em tempo real</div>
+      <nav class="nav">
+        <a href="#overview">Visão Geral</a>
+        <a href="#analytics">Analytics</a>
+        <a href="#operations">Operações de Campo</a>
+        <a href="#ai">IA Agrícola</a>
+        <a href="#business">Produto & Receita</a>
+      </nav>
+      <div class="sidebar-card">
+        <h3>Modo selecionado</h3>
+        <p class="muted">AgroSwarm AI alterna entre engenharia, operação e produto para atender fazendas, integradores e investidores.</p>
+        <ul class="list">
+          <li><span>Engenharia</span><strong>Ativo</strong></li>
+          <li><span>Produto</span><strong>Ativo</strong></li>
+          <li><span>Swarm</span><strong>Ativo</strong></li>
+        </ul>
+      </div>
+    </aside>
+
+    <main class="main">
+      <section class="hero" id="overview">
+        <div class="hero-grid">
+          <div>
+            <div class="badge">Apresentação premium + dashboard interativo</div>
+            <h2 class="title">A plataforma para operar drones agrícolas como um sistema escalável.</h2>
+            <p class="subtitle">AgroSwarm AI conecta planejamento de missões, analytics NDVI, detecção visual de anomalias, telemetria, mapas e coordenação de múltiplos drones em uma experiência web pronta para demos, pilotos e evolução para produção.</p>
+            <div class="cta-row">
+              <button class="btn btn-primary" onclick="scrollToSection('ai')">Testar IA agrícola</button>
+              <button class="btn btn-secondary" onclick="scrollToSection('business')">Ver tese de produto</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="panel-title">
+              <h3>Status da Plataforma</h3>
+              <span class="badge" id="api-status">API: aguardando</span>
+            </div>
+            <ul class="list">
+              <li><span>API backend</span><strong id="status-api">offline</strong></li>
+              <li><span>Frota ativa</span><strong id="fleet-count">--</strong></li>
+              <li><span>NDVI médio</span><strong id="ndvi-average">--</strong></li>
+              <li><span>Conectividade edge</span><strong>buffered sync</strong></li>
+            </ul>
+            <div class="output" id="system-log">Aguardando inicialização da API...</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid metrics">
+        <div class="card metric"><div class="label">Área monitorada</div><div class="value">18.4k ha</div><small>+24% mês contra mês</small></div>
+        <div class="card metric"><div class="label">Drones coordenados</div><div class="value">12</div><small>Swarm mission-ready</small></div>
+        <div class="card metric"><div class="label">Alertas acionáveis</div><div class="value">37</div><small>8 críticos priorizados</small></div>
+        <div class="card metric"><div class="label">Economia operacional</div><div class="value">31%</div><small>estimativa em inspeções</small></div>
+      </section>
+
+      <section class="grid stack" id="analytics">
+        <div class="card">
+          <div class="panel-title">
+            <h2>Analytics NDVI</h2>
+            <button class="btn btn-secondary" onclick="loadNdviData()">Atualizar série</button>
+          </div>
+          <div class="chart-wrap"><canvas id="ndviChart"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="panel-title">
+            <h2>Insights automáticos</h2>
+            <span class="muted">camada produto + IA</span>
+          </div>
+          <div class="grid insights">
+            <article class="insight"><h3>Falha de plantio</h3><p class="muted">Detectada variação consistente de vigor nas linhas centrais do talhão.</p></article>
+            <article class="insight"><h3>Janela de pulverização</h3><p class="muted">Combinar alerta fitossanitário com vento local e bateria da frota.</p></article>
+            <article class="insight"><h3>Baixa conectividade</h3><p class="muted">Missões podem operar em modo offline-first com sincronização posterior.</p></article>
+            <article class="insight"><h3>Swarm cooperativo</h3><p class="muted">Particionamento de área reduz tempo total de cobertura e retorno à base.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" id="operations" style="margin-bottom: 18px;">
+        <div class="panel-title">
+          <div>
+            <h2>Mapa operacional com simulação de drones</h2>
+            <p class="muted">Talhão demo com enxame coordenado, rota e telemetria visual.</p>
+          </div>
+          <button class="btn btn-secondary" onclick="recenterMap()">Recentralizar mapa</button>
+        </div>
+        <div id="map"></div>
+      </section>
+
+      <section class="grid product-grid" id="business" style="margin-bottom: 18px;">
+        <div class="card">
+          <div class="panel-title"><h2>Pitch de produto</h2></div>
+          <ul class="list">
+            <li><span>Problema</span><strong>inspeção lenta e fragmentada</strong></li>
+            <li><span>Solução</span><strong>drone + edge + cloud + swarm</strong></li>
+            <li><span>Receita</span><strong>SaaS + setup + enterprise</strong></li>
+            <li><span>Diferencial</span><strong>agro tropical em larga escala</strong></li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="panel-title"><h2>Arquitetura SaaS</h2></div>
+          <ul class="list">
+            <li><span>Frontend</span><strong>dashboard web responsivo</strong></li>
+            <li><span>Backend</span><strong>FastAPI + analytics</strong></li>
+            <li><span>IA</span><strong>NDVI proxy + CV heurística</strong></li>
+            <li><span>Próxima etapa</span><strong>PostGIS + auth + modelos treinados</strong></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="grid upload-grid" id="ai">
+        <div class="card">
+          <div class="panel-title">
+            <h2>Teste NDVI a partir de imagem</h2>
+            <span class="muted">POST /analyze/ndvi</span>
+          </div>
+          <input id="ndviFile" type="file" accept="image/*" />
+          <button class="btn btn-primary" onclick="uploadImage('/analyze/ndvi', 'ndviFile', 'ndviOutput')">Enviar para análise</button>
+          <div class="output" id="ndviOutput">Selecione uma imagem RGB e envie para obter uma estimativa de vigor vegetativo.</div>
+        </div>
+        <div class="card">
+          <div class="panel-title">
+            <h2>Detecção visual de pragas/anomalias</h2>
+            <span class="muted">POST /detect-pests</span>
+          </div>
+          <input id="pestFile" type="file" accept="image/*" />
+          <button class="btn btn-primary" onclick="uploadImage('/detect-pests', 'pestFile', 'pestOutput')">Executar visão computacional</button>
+          <div class="output" id="pestOutput">O backend MVP usa OpenCV para localizar regiões amareladas/acastanhadas e estimar severidade.</div>
+        </div>
+      </section>
+
+      <p class="footer">AgroSwarm AI • apresentação premium para investidores, clientes e pilotos de campo.</p>
+    </main>
+  </div>
+
+  <script>
+    const API_BASE = localStorage.getItem('agroswarm-api-base') || 'http://127.0.0.1:8000';
+    const log = (message) => {
+      const el = document.getElementById('system-log');
+      el.textContent = `[${new Date().toLocaleTimeString('pt-BR')}] ${message}\n` + el.textContent;
+    };
+
+    const ctx = document.getElementById('ndviChart');
+    const chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+        datasets: [{
+          label: 'NDVI médio',
+          data: [0.51, 0.54, 0.58, 0.61, 0.64, 0.67, 0.70, 0.73, 0.71, 0.68, 0.66, 0.69],
+          borderColor: '#7dffd1',
+          backgroundColor: 'rgba(125,255,209,0.16)',
+          tension: 0.35,
+          fill: true,
+          pointRadius: 4,
+          pointBackgroundColor: '#39d98a'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { labels: { color: '#dff6e8' } } },
+        scales: {
+          x: { ticks: { color: '#9fc9b0' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+          y: { ticks: { color: '#9fc9b0' }, grid: { color: 'rgba(255,255,255,0.05)' }, min: 0, max: 1 }
+        }
+      }
+    });
+
+    const center = [-15.7937, -47.8826];
+    const map = L.map('map', { zoomControl: false }).setView(center, 14);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+    L.control.zoom({ position: 'bottomright' }).addTo(map);
+
+    const fieldBoundary = [
+      [-15.789, -47.889],
+      [-15.789, -47.875],
+      [-15.798, -47.873],
+      [-15.801, -47.885]
+    ];
+    L.polygon(fieldBoundary, { color: '#7dffd1', weight: 2, fillOpacity: 0.16 }).addTo(map)
+      .bindPopup('Talhão demo • missão swarm').openPopup();
+
+    const drones = [
+      { id: 'AS-01', path: [[-15.793, -47.886], [-15.791, -47.880], [-15.796, -47.876], [-15.799, -47.882]], progress: 0 },
+      { id: 'AS-02', path: [[-15.790, -47.884], [-15.792, -47.878], [-15.797, -47.879], [-15.800, -47.874]], progress: 0.35 },
+      { id: 'AS-03', path: [[-15.794, -47.888], [-15.796, -47.882], [-15.793, -47.876], [-15.789, -47.878]], progress: 0.62 }
+    ];
+
+    drones.forEach((drone) => {
+      drone.marker = L.circleMarker(drone.path[0], {
+        radius: 8,
+        color: '#06110d',
+        fillColor: '#39d98a',
+        fillOpacity: 1,
+        weight: 2
+      }).addTo(map).bindTooltip(drone.id, { permanent: true, direction: 'top', offset: [0, -10] });
+      drone.polyline = L.polyline(drone.path, { color: 'rgba(125,255,209,0.4)', dashArray: '6 10' }).addTo(map);
+    });
+
+    function interpolatePath(path, t) {
+      const segments = path.length - 1;
+      const scaled = t * segments;
+      const idx = Math.floor(scaled);
+      const frac = scaled - idx;
+      const start = path[idx];
+      const end = path[(idx + 1) % path.length];
+      return [
+        start[0] + (end[0] - start[0]) * frac,
+        start[1] + (end[1] - start[1]) * frac,
+      ];
+    }
+
+    function animateDrones() {
+      drones.forEach((drone, index) => {
+        drone.progress = (drone.progress + 0.0018 + index * 0.0002) % 1;
+        drone.marker.setLatLng(interpolatePath(drone.path, drone.progress));
+      });
+      requestAnimationFrame(animateDrones);
+    }
+    animateDrones();
+
+    function scrollToSection(id) {
+      document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function recenterMap() {
+      map.setView(center, 14, { animate: true });
+    }
+
+    async function fetchJson(path, options = {}) {
+      const response = await fetch(`${API_BASE}${path}`, options);
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+      return response.json();
+    }
+
+    async function bootstrapStatus() {
+      try {
+        const [health, fleet, ndvi] = await Promise.all([
+          fetchJson('/health'),
+          fetchJson('/drones'),
+          fetchJson('/ndvi')
+        ]);
+        document.getElementById('api-status').textContent = 'API: online';
+        document.getElementById('status-api').textContent = health.status;
+        document.getElementById('fleet-count').textContent = fleet.fleet.length;
+        document.getElementById('ndvi-average').textContent = ndvi.average;
+        log(`API conectada em ${API_BASE}`);
+      } catch (error) {
+        document.getElementById('api-status').textContent = 'API: offline';
+        document.getElementById('status-api').textContent = 'offline';
+        log(`Falha ao conectar com ${API_BASE}. Ajuste API_BASE no localStorage se necessário.`);
+      }
+    }
+
+    async function loadNdviData() {
+      try {
+        const ndvi = await fetchJson('/ndvi');
+        chart.data.datasets[0].data = ndvi.ndvi;
+        chart.update();
+        document.getElementById('ndvi-average').textContent = ndvi.average;
+        log(`Série NDVI atualizada para ${ndvi.field}`);
+      } catch (error) {
+        log(`Não foi possível atualizar NDVI: ${error.message}`);
+      }
+    }
+
+    async function uploadImage(path, inputId, outputId) {
+      const input = document.getElementById(inputId);
+      const output = document.getElementById(outputId);
+      const file = input.files[0];
+      if (!file) {
+        output.textContent = 'Selecione um arquivo de imagem antes de enviar.';
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('file', file);
+      output.textContent = 'Enviando imagem para o backend...';
+
+      try {
+        const payload = await fetchJson(path, { method: 'POST', body: formData });
+        output.textContent = JSON.stringify(payload, null, 2);
+        log(`Upload concluído com sucesso em ${path}`);
+      } catch (error) {
+        output.textContent = `Erro ao chamar ${path}: ${error.message}\nVerifique se a API está rodando em ${API_BASE}.`;
+        log(`Falha no upload para ${path}: ${error.message}`);
+      }
+    }
+
+    bootstrapStatus();
+    loadNdviData();
+  </script>
+</body>
+</html>
