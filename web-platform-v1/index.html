@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AQUABOTIA • Fábrica de Software V1</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <p class="version-tag">Versão da Plataforma: <strong id="platform-version">V1.0.0</strong></p>
+      <h1>AQUABOTIA — Fábrica de Software Ambiental</h1>
+      <p>
+        Plataforma web de gestão de núcleos, arquitetura, MVPs, roadmap e evolução de versões do projeto.
+      </p>
+      <button id="next-version-btn" type="button">Simular próxima versão</button>
+    </header>
+
+    <main>
+      <section>
+        <h2>🏗️ Estrutura da Fábrica de Software</h2>
+        <div class="grid" id="nucleos-grid"></div>
+      </section>
+
+      <section>
+        <h2>🧱 Arquitetura do Sistema</h2>
+        <article class="card">
+          <h3>Fluxo completo</h3>
+          <ol>
+            <li>Drone coleta dados (vídeo + sensores).</li>
+            <li>IA embarcada processa análise inicial.</li>
+            <li>Dados enviados para nuvem.</li>
+            <li>Plataforma processa e armazena.</li>
+            <li>Usuário visualiza no dashboard com alertas.</li>
+          </ol>
+        </article>
+      </section>
+
+      <section>
+        <h2>🚀 Produto Principal (MVP)</h2>
+        <div class="grid" id="mvps-grid"></div>
+      </section>
+
+      <section>
+        <h2>💰 Modelo de Negócio</h2>
+        <article class="card">
+          <h3>Clientes-alvo</h3>
+          <ul>
+            <li>IBAMA</li>
+            <li>Prefeituras</li>
+            <li>Universidades</li>
+            <li>Empresas de saneamento</li>
+            <li>Hidrelétricas</li>
+          </ul>
+          <h3>Receitas</h3>
+          <ul>
+            <li>Venda do drone: R$ 20k – 150k</li>
+            <li>Assinatura da plataforma (SaaS)</li>
+            <li>Licenciamento da IA</li>
+            <li>Projetos ambientais customizados</li>
+          </ul>
+        </article>
+      </section>
+
+      <section>
+        <h2>🧭 Roadmap (12 meses)</h2>
+        <div class="timeline" id="roadmap-timeline"></div>
+      </section>
+
+      <section>
+        <h2>👥 Time Ideal</h2>
+        <article class="card">
+          <ul id="team-list"></ul>
+        </article>
+      </section>
+    </main>
+
+    <footer>
+      <p>
+        🌎 Visão futura: rede nacional de drones monitorando rios, banco de dados ambiental brasileiro e IA preditiva.
+      </p>
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>

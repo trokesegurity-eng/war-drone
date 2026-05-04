@@ -1,0 +1,37 @@
+services:
+  api:
+    build:
+      context: ../backend
+    container_name: aquabotia-api
+    ports:
+      - '8000:8000'
+    depends_on:
+      - postgres
+      - redis
+
+  postgres:
+    image: postgis/postgis:16-3.4
+    container_name: aquabotia-postgres
+    environment:
+      POSTGRES_DB: aquabotia
+      POSTGRES_USER: aquabotia
+      POSTGRES_PASSWORD: aquabotia
+    ports:
+      - '5432:5432'
+
+  redis:
+    image: redis:7-alpine
+    container_name: aquabotia-redis
+    ports:
+      - '6379:6379'
+
+  minio:
+    image: minio/minio:latest
+    container_name: aquabotia-minio
+    command: server /data --console-address ':9001'
+    environment:
+      MINIO_ROOT_USER: aquabotia
+      MINIO_ROOT_PASSWORD: aquabotia123
+    ports:
+      - '9000:9000'
+      - '9001:9001'
