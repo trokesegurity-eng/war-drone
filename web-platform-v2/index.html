@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aquabotia Software Factory • V2</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <p class="badge">Versão técnica: <strong id="version">V2.0.0</strong></p>
+      <h1>Aquabotia Software Factory</h1>
+      <p class="subtitle">IA embarcada e monitoramento subaquático para proteger rios, lagos e represas do Brasil.</p>
+      <button id="bump">Gerar build incremental</button>
+    </header>
+
+    <main>
+      <section>
+        <h2>Arquitetura em 5 camadas</h2>
+        <div class="grid" id="layers"></div>
+      </section>
+
+      <section>
+        <h2>MVP 1.0 (funcional)</h2>
+        <div class="grid" id="mvp"></div>
+      </section>
+
+      <section>
+        <h2>Stack recomendada</h2>
+        <div class="grid" id="stack"></div>
+      </section>
+
+      <section>
+        <h2>Microsserviços</h2>
+        <div class="grid" id="services"></div>
+      </section>
+
+      <section>
+        <h2>Fluxo de dados</h2>
+        <article class="card" id="flow"></article>
+      </section>
+
+      <section>
+        <h2>Modelo inicial (Banco de Dados)</h2>
+        <article class="card">
+          <pre id="schema"></pre>
+        </article>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>

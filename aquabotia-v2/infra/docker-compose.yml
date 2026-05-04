@@ -1,0 +1,34 @@
+services:
+  api:
+    image: python:3.12-slim
+    container_name: aquabotia-api
+    working_dir: /app
+    volumes:
+      - ../backend:/app
+    command: bash -lc "pip install -r requirements.txt && uvicorn app.main:app --host 0.0.0.0 --port 8000"
+    ports:
+      - "8000:8000"
+
+  postgres:
+    image: postgis/postgis:16-3.4
+    environment:
+      POSTGRES_USER: aquabotia
+      POSTGRES_PASSWORD: aquabotia
+      POSTGRES_DB: aquabotia
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  minio:
+    image: minio/minio:latest
+    command: server /data --console-address ':9001'
+    environment:
+      MINIO_ROOT_USER: aquabotia
+      MINIO_ROOT_PASSWORD: aquabotia123
+    ports:
+      - "9000:9000"
+      - "9001:9001"
