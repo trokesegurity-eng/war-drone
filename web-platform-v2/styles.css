@@ -1,0 +1,23 @@
+:root {
+  --bg: #081021;
+  --panel: #101b33;
+  --text: #ecf2ff;
+  --muted: #9caed1;
+  --accent: #35d5c0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Inter, Arial, sans-serif;
+  background: radial-gradient(circle at top, #162a4e, var(--bg));
+  color: var(--text);
+}
+.hero, main { width: min(1120px, 94vw); margin: 0 auto; }
+.hero { padding: 2.5rem 0; }
+.subtitle { color: var(--muted); max-width: 70ch; }
+.badge { display: inline-block; border: 1px solid #2f9bbf; border-radius: 999px; padding: .3rem .8rem; }
+button { background: var(--accent); border: 0; padding: .6rem .9rem; border-radius: .5rem; font-weight: 700; cursor: pointer; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
+.card { background: var(--panel); border: 1px solid #2d3c5f; border-radius: .7rem; padding: 1rem; }
+h2 { margin-top: 2rem; }
+pre { white-space: pre-wrap; color: #bfd1f7; margin: 0; }
