@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="theme-color" content="#041225" />
+    <title>AquaManta: Neon Rift</title>
+    <link rel="stylesheet" href="./src/styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="hud hud-top">
+        <h1>AquaManta: Neon Rift</h1>
+        <div class="stats">
+          <span id="score">Score: 0</span>
+          <span id="energy">Energia: 100%</span>
+          <span id="stage">Setor: 1</span>
+        </div>
+      </header>
+      <canvas id="game" aria-label="Jogo AquaManta"></canvas>
+      <section class="hud hud-bottom">
+        <p>
+          <strong>Teclado:</strong> WASD/Setas mover, Espaço sonar pulse, Shift boost.
+          <strong>Touch:</strong> arraste para mover, botão Pulse e Boost.
+        </p>
+        <button id="restart" hidden>Reiniciar missão</button>
+      </section>
+      <div class="touch-controls" id="touch-controls">
+        <button id="pulse">Pulse</button>
+        <button id="boost">Boost</button>
+      </div>
+    </main>
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>
